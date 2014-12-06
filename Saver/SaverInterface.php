@@ -35,7 +35,7 @@ interface SaverInterface {
      * @param string $toPath
      * @return bool
      */
-    public function cached(SourceInterface $source, $toPath);
+    public function cached($path);
 
     /**
      * Empties the cache of a certain path

@@ -6,7 +6,7 @@
  * Time: 22:11
  */
 
-namespace ISTI\Resizer;
+namespace ISTI\Image\Resizer;
 
 use ISTI\Image\Model\Format;
 use ISTI\Image\Model\ImageInfoInterface;

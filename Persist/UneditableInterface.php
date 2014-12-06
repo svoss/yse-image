@@ -10,6 +10,11 @@ namespace ISTI\Image\Persist;
 
 use ISTI\Image\Model\SourceInterface;
 
+/**
+ * Implement this interface if you want all the information to come directly from the RelationProvider and customizing this information is not provided
+ * Interface UneditableInterface
+ * @package ISTI\Image\Persist
+ */
 interface UneditableInterface{
 
     public function getSource();

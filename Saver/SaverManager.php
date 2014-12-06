@@ -8,7 +8,7 @@
 
 namespace ISTI\Image\Saver;
 
-
+use ISTI\Image\Model\SourceInterface;
 class SaverManager {
     /**
      * @var SaverInterface []
@@ -17,7 +17,7 @@ class SaverManager {
 
     /**
      * If you provide an object
-     * @param Object\string $class either a object or a class name
+     * @param SourceInterface $class either a object or a class name
      * @throws SEOImageException
      *
      * @return SaverInterface

@@ -13,6 +13,7 @@ use ISTI\Image\Relation\RelationInfo;
 use ISTI\Image\Relation\RelationProviderManager;
 use ISTI\Image\Model\Format;
 use ISTI\Image\Factory\ImageInfoFactoryManager;
+use ISTI\Image\Persist\UneditableInterface;
 /**
  * Handles persistence related tasks. Translates between image info object which provides the rest of the system in information
  * Will load the default data from the relation provider into an editable object using loadToPersistent
@@ -50,7 +51,7 @@ class PersistenceManager {
      *
      * @return ImageInfoInterface
      */
-    public function loadFromPersistent(UnEditableInterface $ui, $imageInfoclass, RelationInfo $relationInfo)
+    public function loadFromPersistent(UneditableInterface $ui, $imageInfoclass, RelationInfo $relationInfo)
     {
 
         if (in_array('ISTI\Image\Persist\EditableInterface',class_implements($ui))) {
@@ -110,7 +111,8 @@ class PersistenceManager {
         if(isset($this->repos[$class])) {
             return $this->repos[$class];
         } else {
-            throw new SEOImageException("No repository for ".$class." found");
+            //@todo add to unit test
+            return null;
 
         }
     }

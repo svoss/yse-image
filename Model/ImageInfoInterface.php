@@ -20,7 +20,7 @@ interface ImageInfoInterface {
     public function getGeolocation();
     public function getParentClass();
     public function getCropForFormat(Format $format, $sub = null);
-    public function getPathForFormat(Format $format, $sub = null);
+    public function getPathForFormat(Format $format);
 
 
 } 
