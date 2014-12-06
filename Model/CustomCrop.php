@@ -65,5 +65,37 @@ class CustomCrop {
         return $this->width;
     }
 
+    /**
+     * @param int $height
+     */
+    public function setHeight($height)
+    {
+        $this->height = $height;
+    }
+
+    /**
+     * @param int $startX
+     */
+    public function setStartX($startX)
+    {
+        $this->startX = $startX;
+    }
+
+    /**
+     * @param int $startY
+     */
+    public function setStartY($startY)
+    {
+        $this->startY = $startY;
+    }
+
+    /**
+     * @param int $width
+     */
+    public function setWidth($width)
+    {
+        $this->width = $width;
+    }
+
 
 } 

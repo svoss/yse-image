@@ -19,7 +19,12 @@ interface ImageInfoInterface {
     public function getLongDescription();
     public function getGeolocation();
     public function getParentClass();
-    public function getCropForFormat(Format $format, $sub = null);
+
+    /**
+     * @param Format $format
+     * @return Resize
+     */
+    public function getCropForFormat(Format $format);
     public function getPathForFormat(Format $format);
 
 

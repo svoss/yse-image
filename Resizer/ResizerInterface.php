@@ -12,5 +12,5 @@ use ISTI\Image\Model\Format;
 use ISTI\Image\Model\ImageInfoInterface;
 
 interface ResizerInterface {
-    public function resize(ImageInfoInterface $image, Format $format, $fromPath ,$writePath);
+    public function resize(ImageInfoInterface $imageinfo, Format $format, $fromPath ,$writePath);
 } 

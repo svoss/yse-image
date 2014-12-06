@@ -31,7 +31,7 @@ class UniquifierTest extends \PHPUnit_Framework_TestCase{
 
     protected function persistenceMock($path, $pathsReturned, $extension,$persistor)
     {
-        $repo = $this->getMockForAbstractClass("ISTI\Image\Persist\ImageinfoRepositoryInterface",array("getClass","similarPaths"));
+        $repo = $this->getMock("ISTI\Image\Persist\ImageinfoRepositoryInterface",array("getClass","similarPaths"));
         $repo->expects($this->once())->method("similarPaths")->with($path,$extension)->will($this->returnValue($pathsReturned));
         $pm =  $this->getMockBuilder("ISTI\Image\Persist\PersistenceManager",array("getRepository"))->disableOriginalConstructor()->getMock();
         $pm->expects($this->once())->method('getRepository')->with($persistor)->will($this->returnValue($repo));

@@ -167,8 +167,7 @@ class PersistenceManagerTest  extends \PHPUnit_Framework_TestCase {
         $rmm = $this->getMock('ISTI\Image\Relation\RelationProviderManager');
         $pm = new PersistenceManager($rmm,$manager);
 
-        $mock = $this->getMockForAbstractClass("ISTI\Image\Persist\ImageinfoRepositoryInterface",
-            array("getClass", "similarPaths"));
+        $mock = $this->getMock("ISTI\Image\Persist\ImageinfoRepositoryInterface",array('getClass'));
         $mock->expects($this->atLeastOnce())
             ->method('getClass')
             ->will($this->returnValue("FooClass"));
@@ -185,10 +184,9 @@ class PersistenceManagerTest  extends \PHPUnit_Framework_TestCase {
         $rmm = $this->getMock('ISTI\Image\Relation\RelationProviderManager');
         $pm = new PersistenceManager($rmm,$manager);
 
-        $object = $this->getMockForAbstractClass("stdClass");
+        $object = $this->getMock("stdClass");
 
-        $mock = $this->getMockForAbstractClass("ISTI\Image\Persist\ImageinfoRepositoryInterface",
-            array("getClass", "similarPaths"));
+        $mock = $this->getMockForAbstractClass("ISTI\Image\Persist\ImageinfoRepositoryInterface",array(),'',true,true,true,array('getClass'));
         $mock->expects($this->atLeastOnce())
             ->method('getClass')
             ->will($this->returnValue(get_class($object)));
