@@ -1,0 +1,27 @@
+services:
+    isti.image.saver.manager:
+        class: ISTI\Image\Saver\SaverManager
+    isti.image.relation.provider_manager:
+        class: ISTI\Image\Relation\RelationProviderManager
+    isti.image.factory.imageinfo_manager:
+        class: ISTI\Image\Factory\ImageInfoFactoryManager
+    isti.image.persist.persistence_manager:
+        class: ISTI\Image\Persist\PersistenceManager
+        arguments: [@isti.image.relation.provider_manager, @isti.image.factory.imageinfo_manager]
+    isti.image.resizer.gregwar:
+        class: ISTI\Image\Resizer\GregwarResizer
+    isti.image.uniquifier:
+        class: ISTI\Image\Uniquifier
+        arguments: [@isti.image.persist.persistence_manager]
+    isti.image.manager:
+        class: ISTI\Image\ImageManager
+        arguments: [@isti.image.persist.persistence_manager, %isti.image.imageinfoclass% ,@isti.image.resizer.gregwar,@isti.image.saver.manager,@isti.image.uniquifier,@isti.image.relation.provider_manager ]
+    easybook.slugger:
+        class: Easybook\Slugger
+    isti.image.twig.image_extension:
+        class: ISTI\Image\Twig\ImageExtension
+        arguments: [@isti.image.manager]
+        tags:
+            - { name: twig.extension }
+    isti.image.helper.hasher:
+        class: ISTI\Image\Helper\ImageInfoHasher
