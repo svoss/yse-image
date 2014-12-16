@@ -2,7 +2,7 @@
     "name": "isti/image",
     "description": "Package that works with symfony. PMakes it possible to provide  and manage meta data of images based on the relation it has with the parent object. Usefull for: seo (custom paths, alt, title etc.) and support custom crops. Different types of image storage are possible. For now openstack is supported.",
     "require": {
-        "easybook/slugger": "dev-master"
+        "easybook/slugger" : "1.0.*"
     },
     "license": "Private",
     "authors": [
