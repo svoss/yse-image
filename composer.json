@@ -16,5 +16,6 @@
         "psr-0": {
             "ISTI\\Image": ""
         }
-    }
+    },
+    "target-dir" : "ISTI/Image"
 }
