@@ -11,5 +11,10 @@
             "email": "svoss@i-sti.nl"
         }
     ],
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-0": {
+            "ISTI\\Image": ""
+        }
+    },
 }
