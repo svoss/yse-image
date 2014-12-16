@@ -13,12 +13,14 @@ namespace ISTI\Image\Model;
  * @author Stijn Voss<svoss@i-sti.nl>
  */
 interface ImageInfoInterface {
+    /**
+     * @return SourceInterface
+     */
     public function getSource();
     public function getTitle();
     public function getAlt();
     public function getLongDescription();
     public function getGeolocation();
-    public function getParentClass();
 
     /**
      * @param Format $format

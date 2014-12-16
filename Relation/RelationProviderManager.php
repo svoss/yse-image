@@ -28,10 +28,16 @@ class RelationProviderManager {
         if(is_object($class))
         {
             $class = get_class($class);
+
         }
         if(isset($this->relationProviders[$class])) {
            return $this->relationProviders[$class];
         } else {
+            foreach(class_parents($class) as $class) {
+                if(isset($this->relationProviders[$class])) {
+                    return $this->relationProviders[$class];
+                }
+            }
             throw new SEOImageException("No relation provider for ".$class." found");
 
         }
@@ -61,10 +67,12 @@ class RelationProviderManager {
      */
     public function getFormatFor($relationInfo, $class, $formatName)
     {
+
         $provider = $this->getRelationProvider($class);
         $formats = $provider->getFormats($relationInfo);
         foreach($formats as $format)
         {
+
             if($format->getName() === $formatName)
             {
                 return $format;

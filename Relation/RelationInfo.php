@@ -80,6 +80,16 @@ class RelationInfo {
         return $this->type;
     }
 
+    public function getPersistence()
+    {
+        $persistence = call_user_func(array($this->parentObject, 'get'.ucfirst($this->attribute)));
+        if($this->getType() === self::ManyToOne) {
+            return $persistence[$this->index];
+        } else {
+            return $persistence;
+        }
+    }
+
 
 
 } 

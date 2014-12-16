@@ -5,7 +5,7 @@
  * Date: 02/12/14
  * Time: 19:54
  */
-namespace ISTI\Image\Tests\Relation;
+namespace ISTI\Image\Tests\Saver;
 use ISTI\Image\Saver\SaverManager;
 class SaverManagerTest extends \PHPUnit_Framework_TestCase {
     public function testAddSaver()

@@ -12,6 +12,8 @@ use ISTI\Image\ImageManager;
 use ISTI\Image\SEOImageException;
 use ISTI\Image\Relation\RelationInfo;
 use ISTI\Resizer\ResizerInterface;
+use Symfony\Component\EventDispatcher\Tests\EventDispatcherTest;
+
 class ImageManagerTest extends \PHPUnit_Framework_TestCase{
 
     /**
@@ -282,4 +284,5 @@ class ImageManagerTest extends \PHPUnit_Framework_TestCase{
         }
         return $resizer;
     }
+
 }

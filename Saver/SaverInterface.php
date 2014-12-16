@@ -53,8 +53,17 @@ interface SaverInterface {
     public function delete(SourceInterface $source);
 
     /**
+     * Gets the link to an image path(used in src=) tag of an image
+     * @return string
+     */
+    public function linkTo($path);
+
+
+    /**
      * gets source class that this interface provides in
      * @return string
      */
     public function getClass();
+
+    public function getExtension(SourceInterface $source);
 } 

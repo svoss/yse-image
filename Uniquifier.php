@@ -12,7 +12,7 @@ namespace ISTI\Image;
 use ISTI\Image\Model\SourceInterface;
 use ISTI\Image\Persist\EditableInterface;
 use ISTI\Image\Persist\PersistenceManager;
-
+use ISTI\Image\Model\ImageInfoInterface;
 class Uniquifier {
 
     /**
@@ -34,13 +34,13 @@ class Uniquifier {
      *
      * @return string
      */
-    public function uniquify($candidatePath, EditableInterface $persistor)
+    public function uniquify($candidatePath, ImageInfoInterface $image)
     {
         $info = explode('.', $candidatePath);
         $extension = end($info);
         $path = implode(".",array_splice($info, 0,-1));
 
-        $repo = $this->persistenceManager->getRepository($persistor);
+        $repo = $this->persistenceManager->getRepository($image);
 
 
         $candidateConflicts = $repo->similarPaths($path, $extension);

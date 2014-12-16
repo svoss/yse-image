@@ -97,5 +97,10 @@ class CustomCrop {
         $this->width = $width;
     }
 
+    public function toJSON()
+    {
+        return array($this->getWidth(),$this->getHeight(),$this->getStartX(),$this->getStartY());
+    }
+
 
 } 

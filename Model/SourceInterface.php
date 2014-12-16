@@ -11,4 +11,7 @@ namespace ISTI\Image\Model;
 
 interface SourceInterface {
 
+
+    public function getId();
+
 } 

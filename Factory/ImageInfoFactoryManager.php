@@ -44,7 +44,7 @@ class ImageInfoFactoryManager {
      */
     public function addFactory($factory)
     {
-        if(!isset($this->relationProviders[$factory->getClass()])) {
+        if(!isset($this->factories[$factory->getClass()])) {
             $this->factories[$factory->getClass()] = $factory;
         } else {
             throw new SEOImageException("An factory for the class:".$factory->getClass()."  was already found..");

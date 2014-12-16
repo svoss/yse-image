@@ -27,12 +27,19 @@ class Resize {
      */
     protected $costumCrop;
 
+    function __construct($type, $costumCrop = null)
+    {
+        $this->costumCrop = $costumCrop;
+        $this->type = $type;
+    }
+
+
     /**
      * @return CustomCrop|null
      */
-    public function getCustumCrop()
+    public function getCostumCrop()
     {
-        return $this->custumCrop;
+        return $this->costumCrop;
     }
 
     /**
@@ -62,5 +69,8 @@ class Resize {
         $this->type = $type;
     }
 
-
+    public function toJSON()
+    {
+        return json_encode(array($this->getType(),($this->getCostumCrop() === null ? null : $this->getCostumCrop()->toJSON())));
+    }
 } 

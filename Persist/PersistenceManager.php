@@ -63,7 +63,7 @@ class PersistenceManager {
             $crops = $ui->getCrops();
             $paths = $ui->getPaths();
         } else {
-            $relation = $this->relationProviderManager->getRelationProvider($ui->getParentObject());
+            $relation = $this->relationProviderManager->getRelationProvider($relationInfo->getParentObject());
             $attrs = $relation->getAttributes($ui,$relationInfo);
             $title = $attrs['title'];
             $alt = $attrs['alt'];
@@ -73,7 +73,7 @@ class PersistenceManager {
             $crops = $relation->loadDefaultCrops($ui,$relationInfo);
             $paths = $relation->loadDefaultPaths($ui,$relationInfo);
         }
-        $parent = get_class($ui->getParentObject());
+        $parent = get_class($relationInfo->getParentObject());
         $source = $ui->getSource();
         return $this->factoryManager->getFactory($imageInfoclass)->createInstance($title, $alt, $long, $geo, $parent, $crops, $paths, $source);
     }
@@ -81,14 +81,17 @@ class PersistenceManager {
     public function loadDefaultToPersistent(UneditableInterface $ui,  $relationInfo )
     {
         if ($ui instanceof EditableInterface) {
-            $relation = $this->relationProviderManager->getRelationProvider($ui->getParentObject());
+            $relation = $this->relationProviderManager->getRelationProvider($relationInfo->getParentObject());
             $attrs = $relation->getAttributes($ui,$relationInfo);
             $ui->setTitle($attrs['title']);
             $ui->setAlt($attrs['alt']);
             $ui->setLongDescription($attrs['longdescription']);
             $ui->setGeolocation($attrs['geo']);
+
             $ui->setCrops($relation->loadDefaultCrops($ui, $relationInfo));
-            $ui->setPaths($relation->loadDefaultPaths($ui, $relationInfo));;
+
+
+            $ui->setPaths($relation->loadDefaultPaths($ui, $relationInfo));
 
 
         }

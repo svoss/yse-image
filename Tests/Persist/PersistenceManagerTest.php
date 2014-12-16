@@ -29,7 +29,7 @@ class PersistenceManagerTest  extends \PHPUnit_Framework_TestCase {
             'paths' => array("foo_format" => 'bla/bla.jpg', "foo_format2" => 'bla/bla2.jpg'),
 
         );
-        $mock->expects($this->atLeastOnce())->method('getParentObject')->will($this->returnValue($parentObject));
+
 
 
         foreach($methods as $property => $value) {
@@ -37,6 +37,7 @@ class PersistenceManagerTest  extends \PHPUnit_Framework_TestCase {
 
         }
         $relationinfomock = $this->getMockBuilder('ISTI\Image\Relation\RelationInfo')->disableOriginalConstructor()->getMock();
+        $relationinfomock->expects($this->atLeastOnce())->method('getParentObject')->will($this->returnValue($parentObject));
         $mockRelationProvider = $this->getMockForAbstractClass("ISTI\Image\Relation\RelationProviderInterface",
             array('getAttributes','loadDefaultPaths','loadDefaultCrops')
         );
@@ -65,13 +66,13 @@ class PersistenceManagerTest  extends \PHPUnit_Framework_TestCase {
 
         $parentObject = $this->getMock('StdClass');
         $source = $this->getMock('ISTI\Image\Model\SourceInterface');
-        $relationinfomock = $this->getMockBuilder('ISTI\Image\Relation\RelationInfo')->disableOriginalConstructor()->getMock();
+        $relationinfomock = $this->getMockBuilder('ISTI\Image\Relation\RelationInfo')->setMethods(array("getParentObject"))->disableOriginalConstructor()->getMock();
+        $relationinfomock->expects($this->atLeastOnce())->method('getParentObject')->will($this->returnValue($parentObject));
         $mock = $this->getMockForAbstractClass("ISTI\Image\Persist\UnEditableInterface",
             array('getSource','getParentObject')
         );
 
         $mock->expects($this->once())->method('getSource')->will($this->returnValue($source));
-        $mock->expects($this->atLeastOnce())->method('getParentObject')->will($this->returnValue($parentObject));
         //Uneditable:
         $mockRelationProvider = $this->getMockForAbstractClass("ISTI\Image\Relation\RelationProviderInterface",
             array('getAttributes','loadDefaultPaths','loadDefaultCrops')
@@ -107,8 +108,9 @@ class PersistenceManagerTest  extends \PHPUnit_Framework_TestCase {
         $parentObject = $this->getMock('StdClass');
         $source = $this->getMock('ISTI\Image\Model\SourceInterface');
         $relationinfomock = $this->getMockBuilder('ISTI\Image\Relation\RelationInfo')->disableOriginalConstructor()->getMock();
+        $relationinfomock->expects($this->atLeastOnce())->method('getParentObject')->will($this->returnValue($parentObject));
         $mock = $this->getMockForAbstractClass("ISTI\Image\Persist\EditableInterface",
-            array('getSource','getParentObject','getTitle','getAlt','getLongDescription','getGeolocation','getCrops','getPaths')
+            array('getSource','getTitle','getAlt','getLongDescription','getGeolocation','getCrops','getPaths')
         );
 
 
@@ -128,7 +130,6 @@ class PersistenceManagerTest  extends \PHPUnit_Framework_TestCase {
 
 
         $mock->expects($this->once())->method('getSource')->will($this->returnValue($source));
-        $mock->expects($this->atLeastOnce())->method('getParentObject')->will($this->returnValue($parentObject));
         //Uneditable:
         $mockRelationProvider = $this->getMockForAbstractClass("ISTI\Image\Relation\RelationProviderInterface"
         );

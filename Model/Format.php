@@ -35,6 +35,14 @@ class Format {
      */
     protected $name;
 
+    function __construct($width,$height,$name)
+    {
+        $this->height = $height;
+        $this->name = $name;
+        $this->width = $width;
+    }
+
+
     /**
      * @return string
      */

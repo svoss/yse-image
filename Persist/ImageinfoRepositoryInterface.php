@@ -6,6 +6,7 @@
 namespace ISTI\Image\Persist;
 
 use ISTI\Image\Model\Format;
+use ISTI\Image\Model\ImageInfoInterface;
 
 interface ImageinfoRepositoryInterface {
     /**
@@ -15,9 +16,10 @@ interface ImageinfoRepositoryInterface {
      */
     public function similarPaths($path, $extension);
 
-    public function setActualPathUsed($path, UneditableInterface $persist, Format $format);
+    public function setActualPathUsed($path, ImageInfoInterface $info, Format $format);
 
-    public function getActualPathUsed(UneditableInterface $persist, Format $format);
+    public function getActualPathUsed(ImageInfoInterface $info, Format $format);
+    public function removeActualPathUsed(ImageInfoInterface $info, Format $format);
 
     public function getClass();
 } 
