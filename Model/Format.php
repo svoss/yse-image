@@ -92,4 +92,9 @@ class Format {
     {
         $this->width = $width;
     }
+
+    public function toArray()
+    {
+        return array("width" => $this->width, "height" => $this->height, "name" => $this->name );
+    }
 } 

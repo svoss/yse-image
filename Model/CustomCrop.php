@@ -102,5 +102,39 @@ class CustomCrop {
         return array($this->getWidth(),$this->getHeight(),$this->getStartX(),$this->getStartY());
     }
 
+    public function toArray()
+    {
+
+        return array(
+            "width" => $this->getWidth(),
+            "height" => $this->getHeight(),
+            "startx" => $this->getStartX(),
+            "starty" => $this->getStartY()
+         );
+    }
+
+    public static function fromArray($array)
+    {
+        if($array === null) {
+            return null;
+        }
+        $instance = new self();
+        if(!is_array($array))
+        {
+            $instance->setHeight($array->height);
+            $instance->setWidth($array->width);
+            $instance->setStartX($array->startx);
+            $instance->setStartY($array->starty);
+        }
+        else {
+            $instance->setHeight($array['height']);
+            $instance->setWidth($array['width']);
+            $instance->setStartX($array['startx']);
+            $instance->setStartY($array['starty']);
+        }
+
+        return $instance;
+    }
+
 
 } 

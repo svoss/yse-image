@@ -13,4 +13,6 @@ use ISTI\Image\Model\ImageInfoInterface;
 
 interface ResizerInterface {
     public function resize(ImageInfoInterface $imageinfo, Format $format, $fromPath ,$writePath);
+
+    public function createAdminThumb($path,$width,$height);
 } 

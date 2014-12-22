@@ -39,4 +39,10 @@ class GregwarResizer implements ResizerInterface {
 
     }
 
+    public function createAdminThumb($path,$width,$height)
+    {
+        $image = Image::open($path);
+        return $image->zoomCrop($width, $height)->jpeg();
+    }
+
 } 

@@ -7,7 +7,7 @@
  */
 
 namespace ISTI\Image\Saver;
-
+use ISTI\Image\SEOImageException;
 use ISTI\Image\Model\SourceInterface;
 class SaverManager {
     /**

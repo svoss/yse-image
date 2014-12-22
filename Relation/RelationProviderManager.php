@@ -50,14 +50,29 @@ class RelationProviderManager {
      */
     public function addRelationProvider($relationProviderInterface)
     {
-        if(!isset($this->relationProviders[$relationProviderInterface->getParentClass()])) {
-            $this->relationProviders[$relationProviderInterface->getParentClass()] = $relationProviderInterface;
-        } else {
-            throw new SEOImageException("An relation provider for the class:".$relationProviderInterface->getParentClass()."  was already found..");
-
+        $class = $relationProviderInterface->getParentClass();
+        if(is_array($class)){
+            foreach($class as $c) {
+                $this->addProvider($c, $relationProviderInterface);
+            }
+        }
+        else {
+            $this->addProvider($class, $relationProviderInterface);
         }
 
+
     }
+
+    private function addProvider($name, $provider)
+    {
+        if(!isset($this->relationProviders[$name])) {
+            $this->relationProviders[$name] = $provider;
+        } else {
+            throw new SEOImageException("An relation provider for the class:".$name."  was already found..");
+
+        }
+    }
+
 
     /**
      * @param $class

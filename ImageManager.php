@@ -134,7 +134,15 @@ class ImageManager {
     public function newImage($parent, $attribute, UneditableInterface $image, File $file, $index = null)
     {
 
-        $saver = $this->saverManager->getSaver($image->getSourceClass());
+        $this->loadDefaults($parent, $attribute, $image,$index);
+
+        $source = $this->createSource($image->getSourceClass(), $file);
+        $image->setSource($source);
+
+    }
+
+    public function loadDefaults($parent, $attribute, $image,$index = null)
+    {
         $relationInfo = $this->createRelationInfo($parent,$attribute,$index);
 
         if(in_array('ISTI\Image\Persist\EditableInterface', class_implements($image)))
@@ -142,7 +150,12 @@ class ImageManager {
 
             $this->persistenceManager->loadDefaultToPersistent($image, $relationInfo);
         }
-        $image->setSource($saver->createSource($file));
+    }
+
+    public function createSource($class, File $file)
+    {
+        $saver = $this->saverManager->getSaver($class);
+        return $saver->createSource($file);
 
     }
 
@@ -156,15 +169,74 @@ class ImageManager {
 
     }
 
+    /**
+     * @param $parent
+     * @param $attribute
+     * @param $index
+     * @return RelationInfo
+     *
+     */
     protected function createRelationInfo($parent, $attribute, $index)
     {
-        $persistence = call_user_func(array($parent,'get'.ucfirst($attribute)));
-        if(is_array($persistence) || in_array('Traversable', class_implements($persistence))){
-            $relation = new RelationInfo($attribute, $index, $parent, RelationInfo::ManyToOne);
-        } else {
-            $relation = new RelationInfo($attribute, $index, $parent, RelationInfo::OneToOne);
+        if(is_object($parent)) {
+            $persistence = call_user_func(array($parent, 'get' . ucfirst($attribute)));
+            if (is_array($persistence) || in_array('Traversable', class_implements($persistence))) {
+                $relation = new RelationInfo($attribute, $index, $parent, RelationInfo::ManyToOne);
+            } else {
+                $relation = new RelationInfo($attribute, $index, $parent, RelationInfo::OneToOne);
 
+            }
+        } else {
+            //@todo
+            $relation = new RelationInfo($attribute, $index, $parent, RelationInfo::OneToOne);
         }
         return $relation;
+    }
+
+    public function thumb($parent, $attribute, $width, $height, $index = null)
+    {
+        $persistence = call_user_func(array($parent,'get'.ucfirst($attribute)));
+        if($index != null)
+            $persistence = $persistence[$index];
+
+        $path = $this->saverManager->getSaver($persistence->getSource())->getFilePathToSource($persistence->getSource());
+        return $this->resizer->createAdminThumb($path, $width,$height);
+    }
+
+    /**
+     * @param $parent
+     * @param $attribute
+     * @param null $index
+     * @return Relation\Format[]
+     * @throws SEOImageException
+     *
+     */
+    public function getImageFormats($parent, $attribute, $index = null)
+    {
+        $ri = $this->createRelationInfo($parent, $attribute,$index);
+        $pm = $this->relationProviderManager->getRelationProvider($parent);
+        $formats = $pm->getFormats($ri);
+        return $formats;
+    }
+
+    public function getMinRes($parent, $attribute, $index = null)
+    {
+        $formats = $this->getImageFormats($parent,$attribute,$index);
+        $max_h = 0;
+        $max_w = 0;
+        foreach($formats as $f)
+        {
+            if($max_h < $f->getHeight())
+                $max_h = $f->getHeight();
+            if($max_w < $f->getWidth())
+                $max_w = $f->getWidth();
+        }
+
+        return array($max_w, $max_h);
+    }
+
+    public function getLinkToSource($source)
+    {
+        return $this->saverManager->getSaver($source)->linkToSource($source);
     }
 }

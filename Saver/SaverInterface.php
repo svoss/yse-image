@@ -58,6 +58,12 @@ interface SaverInterface {
      */
     public function linkTo($path);
 
+    /**
+     * Gets the link to an image path(used in src=) tag of an image
+     * @return string
+     */
+    public function linkToSource(SourceInterface $source);
+
 
     /**
      * gets source class that this interface provides in

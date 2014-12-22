@@ -73,4 +73,14 @@ class Resize {
     {
         return json_encode(array($this->getType(),($this->getCostumCrop() === null ? null : $this->getCostumCrop()->toJSON())));
     }
+
+    public function toArray()
+    {
+        return array("type" => $this->getType(),"customCrop" => $this->getCostumCrop() === null ? null : $this->getCostumCrop()->toArray());
+    }
+    public static function fromArray($array)
+    {
+        $instance = new self($array['type'], CustomCrop::fromArray($array['customCrop']));
+        return $instance;
+    }
 } 

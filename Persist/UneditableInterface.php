@@ -18,7 +18,7 @@ use ISTI\Image\Model\SourceInterface;
 interface UneditableInterface{
 
     public function getSource();
-    public function setSource(SourceInterface $source);
+    public function setSource($source);
     public function getSourceClass();
 
 } 
