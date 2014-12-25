@@ -29,12 +29,12 @@ class GregwarResizer implements ResizerInterface {
             $crop = $resize->getCustumCrop();
             $image
                 ->crop($crop->getStartX(),$crop->getStartY(),$crop->getWidth(), $crop->getHeight())
-                ->resize($format->getHeight(), $format->getWidth());
+                ->resize( $format->getWidth(),$format->getHeight());
         } else {
             throw new SEOImageException("Can't handle resize type: ".$resize->getType());
         }
 
-        $image->save($writePath);
+        $image->save($writePath,'guess',90);
 
 
     }

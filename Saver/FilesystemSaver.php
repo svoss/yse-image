@@ -47,7 +47,7 @@ class FilesystemSaver implements SaverInterface {
      */
     public function createSource(File $uploadedFile)
     {
-        $ext = $uploadedFile->getExtension();
+        $ext = $uploadedFile->guessExtension();
         $filename = uniqid()."-".$uploadedFile->getFilename().$ext;
 
         $uploadedFile->move($this->privateFolder, $filename);
@@ -74,7 +74,12 @@ class FilesystemSaver implements SaverInterface {
      */
     public function saveResized(SourceInterface $source, $targetPath, $localPath)
     {
-        rename($localPath, $this->publicFolder.$targetPath);
+        $target = $this->publicFolder.$targetPath;
+        $dir = dirname($target);
+        if(!file_exists($dir)) {
+            mkdir($dir, 0777, true);
+        }
+        rename($localPath,$target );
     }
 
     /**
@@ -115,7 +120,7 @@ class FilesystemSaver implements SaverInterface {
      */
     public function linkTo($path)
     {
-        return "/".$path;
+        return $this->pathPrefix."".$path;
     }
 
     /**
