@@ -53,11 +53,15 @@ class OpenstackSaver implements SaverInterface{
     protected $publicContainer;
 
     /**
+     * @var Container
+     */
+    protected $urlPrefix;
+    /**
      * @var Service
      */
     protected $connection;
 
-    function __construct($idURL, $password, $privateContainerName, $publicContainerName, $tenantId, $username)
+    function __construct($idURL, $password, $privateContainerName, $publicContainerName, $tenantId, $username, $urlPrefix)
     {
         $this->idURL = $idURL;
         $this->password = $password;
@@ -68,6 +72,7 @@ class OpenstackSaver implements SaverInterface{
         $this->connection = null;
         $this->privateContainer = null;
         $this->publicContainer = null;
+        $this->urlPrefix = $urlPrefix;
     }
 
     /**
@@ -226,7 +231,7 @@ class OpenstackSaver implements SaverInterface{
      */
     public function linkTo($path)
     {
-        return "https://be2f9c9ac9bb48f7b50016ebdc746ca0.objectstore.eu/images/".$path;
+        return $this->urlPrefix.$path;
     }
 
     public function getExtension(SourceInterface $source)
