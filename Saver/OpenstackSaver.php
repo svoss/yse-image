@@ -61,7 +61,7 @@ class OpenstackSaver implements SaverInterface{
      */
     protected $connection;
 
-    function __construct($idURL, $password, $privateContainerName, $publicContainerName, $tenantId, $username, $urlPrefix)
+    function __construct($idURL, $password, $privateContainerName, $publicContainerName, $tenantId, $username, $urlPrefix, $privateUrlPrefix)
     {
         $this->idURL = $idURL;
         $this->password = $password;
@@ -73,6 +73,7 @@ class OpenstackSaver implements SaverInterface{
         $this->privateContainer = null;
         $this->publicContainer = null;
         $this->urlPrefix = $urlPrefix;
+        $this->privateUrlPrefix = $privateUrlPrefix;
     }
 
     /**
@@ -245,4 +246,15 @@ class OpenstackSaver implements SaverInterface{
             $ext = 'jpg';
         return $ext;
     }
+
+    /**
+     * Gets the link to an image path(used in src=) tag of an image
+     * @return string
+     */
+    public function linkToSource(SourceInterface $source)
+    {
+        return $this->privateUrlPrefix.$source->getFilename();
+    }
+
+
 } 
