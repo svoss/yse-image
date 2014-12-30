@@ -9,6 +9,7 @@
 namespace ISTI\Image\Form\Type;
 
 use ISTI\Image\Form\DataTransformer\FileToSourceTransformer;
+use ISTI\Image\Form\DataTransformer\ImageTransformer;
 use ISTI\Image\Form\DataTransformer\ResizeTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormError;
@@ -61,7 +62,8 @@ class ImageDocumentType extends AbstractType{
                     }
 
 
-                });
+                })
+            ->addModelTransformer(new ImageTransformer());
 
             $builder->add('alt','hidden');
             $builder->add('title','hidden');
