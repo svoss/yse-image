@@ -48,7 +48,7 @@ class FilesystemSaver implements SaverInterface {
     public function createSource(File $uploadedFile)
     {
         $ext = $uploadedFile->guessExtension();
-        $filename = uniqid()."-".$uploadedFile->getFilename().$ext;
+        $filename = uniqid()."-".$uploadedFile->getFilename().".".$ext;
 
         $uploadedFile->move($this->privateFolder, $filename);
 
