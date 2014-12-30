@@ -26,7 +26,7 @@ class GregwarResizer implements ResizerInterface {
         if ($resize->getType() === 'zoom'){
             $image->zoomCrop($format->getWidth(), $format->getHeight());
         } else if($resize->getType() === 'custom') {
-            $crop = $resize->getCustumCrop();
+            $crop = $resize->getCostumCrop();
             $image
                 ->crop($crop->getStartX(),$crop->getStartY(),$crop->getWidth(), $crop->getHeight())
                 ->resize( $format->getWidth(),$format->getHeight());

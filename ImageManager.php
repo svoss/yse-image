@@ -159,8 +159,48 @@ class ImageManager {
 
     }
 
-    public function editImage(UneditableInterface $image)
+    public function clearCache($parent, $attribute, $index = null)
     {
+        $persistence = call_user_func(array($parent,'get'.ucfirst($attribute)));
+
+        if(is_array($persistence) || in_array('Traversable', class_implements($persistence))){
+            if($index === null)
+            {
+                throw new SEOImageException("No index defined when in a one to many relation");
+            }
+            $relation = new RelationInfo($attribute, $index, $parent, RelationInfo::ManyToOne);
+            $persistence = $persistence[$index];
+        } else {
+            $relation = new RelationInfo($attribute, $index, $parent, RelationInfo::OneToOne);
+
+        }
+        $image = $this->persistenceManager->loadFromPersistent($persistence, $this->imageInfoClass, $relation);
+        //gets the saver for this source
+        $saver = $this->saverManager->getSaver($image->getSource());
+        //format for this image
+        $rp = $this->relationProviderManager->getRelationProvider($parent);
+        //load the repo of the image info persistence object:
+        $repo = $this->persistenceManager->getRepository($image);
+
+        $formats = $rp->getFormats($relation);
+        foreach($formats as $format)
+        {
+            //retrieve image info object from persist image info and the image class
+            $image = $this->persistenceManager->loadFromPersistent($persistence, $this->imageInfoClass, $relation);
+            if($repo === null || $repo->getActualPathUsed($image,$format) === null)
+                $path = $image->getPathForFormat($format).".".$saver->getExtension($image->getSource());
+            else
+                $path = $repo->getActualPathUsed($image,$format);
+            if($saver->cached($path))
+            {
+                $saver->emptyCache($image->getSource(),$path);
+            }
+        }
+
+
+
+
+
 
     }
 
