@@ -45,6 +45,14 @@ class OpenstackSource implements SourceInterface {
         return $this->filename;
     }
 
+    public function getExtension()
+    {
+        $filename = $this->getFilename();
+        $ext = pathinfo($filename, PATHINFO_EXTENSION);
+        if($ext === 'jpeg')
+            $ext = 'jpg';
+        return $ext;
+    }
 
 
-} 
+}

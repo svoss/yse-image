@@ -119,12 +119,18 @@ class ImageManager {
             //where is the source image
             $pathToSourceImage = $saver->getFilePathToSource($image->getSource());
 
-            //create temporary file to save the file to it
-            $tmp = tempnam(sys_get_temp_dir(),'image');
-            $this->resizer->resize($image, $format, $pathToSourceImage, $tmp);
+            if($saver->cropable($image->getSource()))
+            {
+                //create temporary file to save the file to it
+                $tmp = tempnam(sys_get_temp_dir(),'image');
+                $this->resizer->resize($image, $format, $pathToSourceImage, $tmp);
 
-            //now save image to right location
-            $saver->saveResized($image->getSource(), $path, $tmp);
+                //now save image to right location
+                $saver->saveResized($image->getSource(), $path, $tmp);
+            } else {
+                $saver->saveResized($image->getSource(), $path, $pathToSourceImage,true);
+            }
+
         }
 
         return $saver->linkTo($path);
@@ -238,7 +244,10 @@ class ImageManager {
         $persistence = call_user_func(array($parent,'get'.ucfirst($attribute)));
         if($index != null)
             $persistence = $persistence[$index];
-
+        if($persistence->getSource()->getExtension() == 'svg')
+        {
+            return $this->saverManager->getSaver($persistence->getSource())->linkToSource($persistence->getSource());
+        }
         $path = $this->saverManager->getSaver($persistence->getSource())->getFilePathToSource($persistence->getSource());
         return $this->resizer->createAdminThumb($path, $width,$height);
     }
@@ -278,5 +287,10 @@ class ImageManager {
     public function getLinkToSource($source)
     {
         return $this->saverManager->getSaver($source)->linkToSource($source);
+    }
+
+    public function isCroppable($source)
+    {
+        return $this->saverManager->getSaver($source)->cropable($source);
     }
 }

@@ -37,7 +37,8 @@ class ImageExtension extends \Twig_Extension {
             'image_thumb' => new \Twig_Function_Function(array($this,'thumb')),
             'image_formats' => new \Twig_Function_Function(array($this,'imageFormats')),
             'source_link' => new \Twig_Function_Function(array($this,'sourceLink')),
-            "min_res" => new \Twig_Function_Function(array($this,'minRes'))
+            "min_res" => new \Twig_Function_Function(array($this,'minRes')),
+            "croppable" => new \Twig_Function_Function(array($this,"croppable"))
         );
     }
 
@@ -86,6 +87,11 @@ class ImageExtension extends \Twig_Extension {
     public function sourceLink($source)
     {
         return $this->im->getLinkToSource($source);
+    }
+
+    public function croppable($source)
+    {
+        return $this->im->isCroppable($source);
     }
 
 } 

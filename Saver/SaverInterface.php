@@ -27,7 +27,7 @@ interface SaverInterface {
      * @param string          $toPath
      * @return mixed
      */
-    public function saveResized(SourceInterface $source, $targetPath, $localPath);
+    public function saveResized(SourceInterface $source, $targetPath, $localPath,$copy = false);
 
     /**
      * Is this file in cache
@@ -72,4 +72,6 @@ interface SaverInterface {
     public function getClass();
 
     public function getExtension(SourceInterface $source);
+
+    public function cropable(SourceInterface $source);
 } 

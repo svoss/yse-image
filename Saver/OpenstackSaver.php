@@ -167,10 +167,15 @@ class OpenstackSaver implements SaverInterface{
      * @param string $toPath
      * @return mixed
      */
-    public function saveResized(SourceInterface $source, $targetPath, $localPath)
+    public function saveResized(SourceInterface $source, $targetPath, $localPath, $copy=false)
     {
-        $container = $this->getPublicContainer();
-        $container->uploadObject($targetPath, fopen($localPath,'r'));
+        if(!$copy) {
+            $container = $this->getPublicContainer();
+            $container->uploadObject($targetPath, fopen($localPath,'r'));
+        } else {
+            throw new \Exception("Copy is not supported for now");
+        }
+
     }
 
     /**
@@ -256,5 +261,9 @@ class OpenstackSaver implements SaverInterface{
         return $this->privateUrlPrefix.$source->getFilename();
     }
 
+    public function cropable(SourceInterface $source)
+    {
 
+        return $source->getExtension() !== 'svg';
+    }
 } 

@@ -48,19 +48,21 @@ class ImageDocumentType extends AbstractType{
             ->add($builder->create('source', 'file',array("required" => false))
                 ->addModelTransformer(new FileToSourceTransformer($this->saver )))
                 ->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) use ($ic){
-
-                    $errorList = $this->validator->validate(
-                        $event->getData()['source'],
-                        $ic
-                    );
-                    if(count($errorList) > 0) {
-                        $event->setData(null);
+                    $file = $event->getData()['source'];
+                    if($file != null && $file->guessExtension() != 'svg')
+                    {
+                        $errorList = $this->validator->validate(
+                            $file,
+                            $ic
+                        );
+                        if(count($errorList) > 0) {
+                            $event->setData(null);
+                        }
+                        foreach($errorList as $error) {
+                            $ferror = new FormError($error->getMessage(), $error->getMessageTemplate(), $error->getMessageParameters());
+                            $event->getForm()->addError($ferror);
+                        }
                     }
-                    foreach($errorList as $error) {
-                        $ferror = new FormError($error->getMessage(), $error->getMessageTemplate(), $error->getMessageParameters());
-                        $event->getForm()->addError($ferror);
-                    }
-
 
                 })
             ->addModelTransformer(new ImageTransformer());

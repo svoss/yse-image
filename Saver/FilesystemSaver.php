@@ -72,14 +72,20 @@ class FilesystemSaver implements SaverInterface {
      * @param string $toPath
      * @return mixed
      */
-    public function saveResized(SourceInterface $source, $targetPath, $localPath)
+    public function saveResized(SourceInterface $source, $targetPath, $localPath,$copy = false)
     {
         $target = $this->publicFolder.$targetPath;
         $dir = dirname($target);
         if(!file_exists($dir)) {
             mkdir($dir, 0777, true);
         }
-        rename($localPath,$target );
+
+        if($copy) {
+            copy($localPath, $target);
+        } else {
+            rename($localPath, $target);
+        }
+
     }
 
     /**
@@ -148,6 +154,11 @@ class FilesystemSaver implements SaverInterface {
     public function linkToSource(SourceInterface $source)
     {
         return $this->privatePathPrefix.$source->getFilename();
+    }
+
+    public function cropable(SourceInterface $source)
+    {
+        return $source->getExtension() != 'svg';
     }
 
 
