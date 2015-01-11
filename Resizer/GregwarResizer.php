@@ -17,7 +17,9 @@ class GregwarResizer implements ResizerInterface {
     public function resize(ImageInfoInterface $imageinfo, Format $format, $fromPath, $writePath)
     {
 
-        if(!file_exists($fromPath)) {
+        if(!file_exists($fromPath))
+        {
+            echo 'soso';
             throw new SEOImageException("File ".$fromPath." does not exist");
         }
 

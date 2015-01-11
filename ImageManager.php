@@ -72,6 +72,7 @@ class ImageManager {
      */
     public function format($formatName, $parent, $attribute, $index = null)
     {
+
         $persistence = call_user_func(array($parent,'get'.ucfirst($attribute)));
 
         if(is_array($persistence) || in_array('Traversable', class_implements($persistence))){
