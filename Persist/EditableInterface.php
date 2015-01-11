@@ -16,6 +16,8 @@ interface EditableInterface extends UneditableInterface{
     public function getGeolocation();
     public function getCrops();
     public function getPaths();
+    public function getFilters();
+    public function setFilters($filters);
     public function setTitle($title);
     public function setAlt($alt);
     public function setLongDescription($description);

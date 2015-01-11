@@ -59,7 +59,7 @@ class PersistenceManager {
             $alt = $ui->getAlt();
             $long = $ui->getLongDescription();
             $geo = $ui->getGeolocation();
-
+            $filters = $ui->getFilters();
             $crops = $ui->getCrops();
             $paths = $ui->getPaths();
         } else {
@@ -69,13 +69,13 @@ class PersistenceManager {
             $alt = $attrs['alt'];
             $long =  $attrs['longdescription'];
             $geo = $attrs['geo'];
-
+            $filters = $relation->loadDefaultFilters($ui,$relationInfo);
             $crops = $relation->loadDefaultCrops($ui,$relationInfo);
             $paths = $relation->loadDefaultPaths($ui,$relationInfo);
         }
         $parent = get_class($relationInfo->getParentObject());
         $source = $ui->getSource();
-        return $this->factoryManager->getFactory($imageInfoclass)->createInstance($title, $alt, $long, $geo, $parent, $crops, $paths, $source);
+        return $this->factoryManager->getFactory($imageInfoclass)->createInstance($title, $alt, $long, $geo, $parent, $crops, $paths, $source,$filters);
     }
 
     public function loadDefaultToPersistent(UneditableInterface $ui,  $relationInfo )
@@ -87,7 +87,7 @@ class PersistenceManager {
             $ui->setAlt($attrs['alt']);
             $ui->setLongDescription($attrs['longdescription']);
             $ui->setGeolocation($attrs['geo']);
-
+            $ui->setFilters($relation->loadDefaultFilters($ui,$relationInfo));
             $ui->setCrops($relation->loadDefaultCrops($ui, $relationInfo));
 
 

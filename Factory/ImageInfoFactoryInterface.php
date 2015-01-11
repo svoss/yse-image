@@ -21,9 +21,10 @@ interface ImageInfoFactoryInterface {
      * @param $crops
      * @param $paths
      * @param SourceInterface $source
+     * @param $filters
      * @return mixed
      */
-    public  function createInstance($title, $alt, $long, $geolocation, $parent, $crops, $paths, SourceInterface $source);
+    public  function createInstance($title, $alt, $long, $geolocation, $parent, $crops, $paths, SourceInterface $source,$filters);
 
     public function getClass();
 } 

@@ -49,7 +49,12 @@ class ImageInfo implements ImageInfoInterface{
      */
     protected $paths;
 
-    function __construct($alt, $crops, $geoLocation, $longDescription, $paths, $source, $title)
+    /**
+     * @var array
+     */
+    protected $filters;
+
+    function __construct($alt, $crops, $geoLocation, $longDescription, $paths, $source, $title, $filters)
     {
         $this->alt = $alt;
         $this->crops = $crops;
@@ -58,6 +63,7 @@ class ImageInfo implements ImageInfoInterface{
         $this->paths = $paths;
         $this->source = $source;
         $this->title = $title;
+        $this->filters = $filters;
     }
 
     /**
@@ -114,5 +120,15 @@ class ImageInfo implements ImageInfoInterface{
     {
         return isset($this->paths[$format->getName()]) ? $this->paths[$format->getName()] : null;
     }
+
+    /**
+     * @param Format $format
+     * @return Filter[]
+     */
+    public function getFiltersForFormat(Format $format)
+    {
+        return isset($this->filters[$format->getName()]) ? $this->filters[$format->getName()] : null;
+    }
+
 
 } 

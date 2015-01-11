@@ -54,5 +54,10 @@ interface RelationProviderInterface {
      * Gets formats
      * @return Format[]
      */
+    public function loadDefaultFilters(UneditableInterface $ui,RelationInfo $relationInfo);
+    /**
+     * Gets formats
+     * @return Format[]
+     */
     public function getFormats(RelationInfo $relationInfo);
 } 

@@ -55,6 +55,12 @@ abstract class EditableImage implements EditableInterface{
     protected $paths;
 
     /**
+     * @ORM\Column(type="object")
+     * @var array
+     */
+    protected $filters;
+
+    /**
      * @return string
      */
     public function getAlt()
@@ -140,6 +146,22 @@ abstract class EditableImage implements EditableInterface{
     public function setPaths($paths)
     {
         $this->paths = $paths;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFilters()
+    {
+        return $this->filters;
+    }
+
+    /**
+     * @param array $filters
+     */
+    public function setFilters($filters)
+    {
+        $this->filters = $filters;
     }
 
 

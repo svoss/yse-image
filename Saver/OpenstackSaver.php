@@ -61,7 +61,11 @@ class OpenstackSaver implements SaverInterface{
      */
     protected $connection;
 
-    function __construct($idURL, $password, $privateContainerName, $publicContainerName, $tenantId, $username, $urlPrefix, $privateUrlPrefix)
+    /**
+     * @var CacherInterface
+     */
+    protected $cacher;
+    function __construct($idURL, $password, $privateContainerName, $publicContainerName, $tenantId, $username, $urlPrefix, $privateUrlPrefix, $cacher)
     {
         $this->idURL = $idURL;
         $this->password = $password;
@@ -74,6 +78,8 @@ class OpenstackSaver implements SaverInterface{
         $this->publicContainer = null;
         $this->urlPrefix = $urlPrefix;
         $this->privateUrlPrefix = $privateUrlPrefix;
+        $this->cacher = $cacher;
+
     }
 
     /**
@@ -186,14 +192,15 @@ class OpenstackSaver implements SaverInterface{
      */
     public function cached($path)
     {
-        try {
-            $this->getPublicContainer()->getObject($path);
-        }
-        catch(ObjectNotFoundException $ex)
-        {
-            return false;
-        }
+        if (!$this->cacher->isCached($path)) {
 
+            try {
+                $this->getPublicContainer()->getObject($path);
+            } catch (ObjectNotFoundException $ex) {
+                return false;
+            }
+            $this->cacher->setCached($path);
+         }
         return true;
     }
 
@@ -206,6 +213,7 @@ class OpenstackSaver implements SaverInterface{
     public function emptyCache(SourceInterface $source, $toPath)
     {
         $this->getPublicContainer()->getObject($toPath)->delete();
+        $this->cacher->removeCached($toPath);
     }
 
     /**

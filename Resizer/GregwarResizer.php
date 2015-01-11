@@ -19,7 +19,6 @@ class GregwarResizer implements ResizerInterface {
 
         if(!file_exists($fromPath))
         {
-            echo 'soso';
             throw new SEOImageException("File ".$fromPath." does not exist");
         }
 
@@ -36,7 +35,29 @@ class GregwarResizer implements ResizerInterface {
             throw new SEOImageException("Can't handle resize type: ".$resize->getType());
         }
 
+        foreach($imageinfo->getFiltersForFormat($format) as $filter){
+            $this->applyFilter($image,$filter->getName(), $filter->getValue());
+        }
+
         $image->save($writePath,'guess',90);
+
+
+    }
+
+    protected function applyFilter(Image $image, $filterName, $filterValue)
+    {
+        switch($filterName){
+            case 'brightness':
+                $image->brightness($filterValue);
+                break;
+            case 'contrast':
+                $image->contrast($filterValue);
+                break;
+            default:
+                throw new SEOImageException("No filter found for ".$filterName);
+                break;
+
+        }
 
 
     }

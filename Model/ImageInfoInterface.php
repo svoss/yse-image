@@ -29,5 +29,10 @@ interface ImageInfoInterface {
     public function getCropForFormat(Format $format);
     public function getPathForFormat(Format $format);
 
+    /**
+     * @param Format $format
+     * @return Filter[]
+     */
+    public function getFiltersForFormat(Format $format);
 
 } 
