@@ -13,6 +13,8 @@ use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCR;
  * @PHPCR\Document(referenceable=true)
  */
 class Image implements \ISTI\Image\Persist\EditableInterface{
+
+
     /**
      * @PHPCR\Id()
      */
@@ -58,6 +60,10 @@ class Image implements \ISTI\Image\Persist\EditableInterface{
      */
     protected $paths;
 
+    /**
+     * @PHPCR\String()
+     */
+    protected $filters;
 
     protected $sourceChanged;
 
@@ -216,5 +222,13 @@ class Image implements \ISTI\Image\Persist\EditableInterface{
     {
         $this->geoLocation = $geoLocation;
     }
+    public function getFilters()
+    {
+        return unserialize(base64_decode($this->filters));
+    }
 
+    public function setFilters($filters)
+    {
+       $this->filters = base64_encode(serialize($filters));
+    }
 }
