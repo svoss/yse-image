@@ -34,9 +34,11 @@ class GregwarResizer implements ResizerInterface {
         } else {
             throw new SEOImageException("Can't handle resize type: ".$resize->getType());
         }
+        if($imageinfo->getFiltersForFormat($format)!== null){
+            foreach($imageinfo->getFiltersForFormat($format) as $filter){
+                $this->applyFilter($image,$filter->getName(), $filter->getValue());
+            }
 
-        foreach($imageinfo->getFiltersForFormat($format) as $filter){
-            $this->applyFilter($image,$filter->getName(), $filter->getValue());
         }
 
         $image->save($writePath,'guess',90);
