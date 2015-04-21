@@ -126,6 +126,7 @@ class FilesystemSaver implements SaverInterface {
      */
     public function linkTo($path)
     {
+
         return $this->pathPrefix."".$path;
     }
 

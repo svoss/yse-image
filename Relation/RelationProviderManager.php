@@ -85,6 +85,7 @@ class RelationProviderManager {
 
         $provider = $this->getRelationProvider($class);
         $formats = $provider->getFormats($relationInfo);
+
         foreach($formats as $format)
         {
 

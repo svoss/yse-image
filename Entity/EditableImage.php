@@ -153,6 +153,7 @@ abstract class EditableImage implements EditableInterface{
      */
     public function getFilters()
     {
+
         return $this->filters;
     }
 
@@ -161,6 +162,7 @@ abstract class EditableImage implements EditableInterface{
      */
     public function setFilters($filters)
     {
+        var_dump($filters);
         $this->filters = $filters;
     }
 

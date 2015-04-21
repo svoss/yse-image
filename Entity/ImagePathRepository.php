@@ -26,11 +26,14 @@ class ImagePathRepository implements ImageinfoRepositoryInterface{
      */
     protected $em;
 
+    protected $cache;
+
     /**
      * @param ImageInfoHasher $hasher
      */
     public function __construct(ImageInfoHasher $hasher, EntityManager $entityManager)
     {
+        $this->cache = array();
         $this->hasher = $hasher;
         $this->em = $entityManager;
     }
@@ -60,21 +63,34 @@ class ImagePathRepository implements ImageinfoRepositoryInterface{
         $r->setActualPath($path);
         $this->em->persist($r);
         $this->em->flush();
+        $this->cache[$r->getHash()] = $r;
     }
 
     public function getActualPathUsed(ImageInfoInterface $info, Format $format)
     {
         $hash = $this->hasher->hash($info, $format);
-        $query = $this->em->createQuery("SELECT p FROM ISTI\Image\Entity\ImagePath p WHERE p.hash = :hash ")->setParameter('hash',$hash);
-        $r = $query->getOneOrNullResult();
+        if(isset($this->cache[$hash])){
+            $r = $this->cache[$hash];
+        }else{
+            $query = $this->em->createQuery("SELECT p FROM ISTI\Image\Entity\ImagePath p WHERE p.hash = :hash ")->setParameter('hash',$hash);
+            $r = $query->getOneOrNullResult();
+        }
+        if ($r!== null) {
+            $this->cache[$r->getHash()] = $r;
+        }
+
         return $r === null ? null : $r->getActualPath();
     }
 
     public function removeActualPathUsed(ImageInfoInterface $info, Format $format)
     {
         $hash = $this->hasher->hash($info, $format);
+        if(isset($this->cache[$hash])){
+            unset($this->cache[$hash]);
+        }
         $query = $this->em->createQuery("DELETE FROM ISTI\Image\Entity\ImagePath p WHERE p.hash = :hash ")->setParameter('hash',$hash);
         $query->execute();
+
     }
 
     public function getClass()

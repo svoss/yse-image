@@ -92,6 +92,7 @@ class ImageManager {
 
         //format for this image
         $format = $this->relationProviderManager->getFormatFor($relation, $parent, $formatName);
+
         //load the repo of the image info persistence object:
         $repo = $this->persistenceManager->getRepository($image);
 
@@ -133,6 +134,7 @@ class ImageManager {
             }
 
         }
+
 
         return $saver->linkTo($path);
 
