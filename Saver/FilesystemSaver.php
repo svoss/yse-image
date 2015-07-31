@@ -80,10 +80,10 @@ class FilesystemSaver implements SaverInterface {
             mkdir($dir, 0777, true);
         }
 
-        if($copy) {
+
             copy($localPath, $target);
-        } else {
-            rename($localPath, $target);
+         if(!$copy) {
+            unlink($localPath);
         }
 
     }

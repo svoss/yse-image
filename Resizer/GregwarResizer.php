@@ -24,7 +24,7 @@ class GregwarResizer implements ResizerInterface {
 
         $image = Image::open($fromPath);
         $resize = $imageinfo->getCropForFormat($format);
-        if ($resize->getType() === 'zoom'){
+        if ($resize->getType() === 'zoom' || $resize->getType() === null){
             $image->zoomCrop($format->getWidth(), $format->getHeight());
         } else if($resize->getType() === 'custom') {
             $crop = $resize->getCostumCrop();
