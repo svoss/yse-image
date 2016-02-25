@@ -67,7 +67,8 @@ class ImageEntityType extends AbstractType {
 
             })
             ->addModelTransformer(new ImageTransformer());
-
+        $builder->add('bgColor','hidden');
+        $builder->add('cropOutside','hidden');
         $builder->add('alt','hidden');
         $builder->add('title','hidden');
         $builder->add($builder->create('crops','collection',array('type' => 'hidden'))->addModelTransformer(new ResizeTransformer()));

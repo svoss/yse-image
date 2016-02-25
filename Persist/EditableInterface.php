@@ -24,4 +24,8 @@ interface EditableInterface extends UneditableInterface{
     public function setGeolocation($geolocation);
     public function setCrops($crops);
     public function setPaths($paths);
+    public function getBgColor();
+    public function setBgColor($bgColor);
+    public function isCropOutside();
+    public function setCropOutside($cropOutside);
 } 

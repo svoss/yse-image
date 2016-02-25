@@ -28,6 +28,11 @@ class GregwarResizer implements ResizerInterface {
             $image->zoomCrop($format->getWidth(), $format->getHeight());
         } else if($resize->getType() === 'custom') {
             $crop = $resize->getCostumCrop();
+            if($imageinfo->getCropOutside())
+            {
+                $target = $this->enlarge($image->width(),$image->height(),$format->getWidth()/$format->getHeight());
+                $image->resize($target[0],$target[1],$imageinfo->getBgColor());
+            }
             $image
                 ->crop($crop->getStartX(),$crop->getStartY(),$crop->getWidth(), $crop->getHeight())
                 ->resize( $format->getWidth(),$format->getHeight());
@@ -70,4 +75,21 @@ class GregwarResizer implements ResizerInterface {
         return "/".$image->zoomCrop($width, $height)->jpeg();
     }
 
+    protected function enlarge($width, $height, $targetRatio)
+    {
+        $currentRatio = $width/$height;
+        $factor = $targetRatio/$currentRatio;
+        //real width relativly lower than actual width
+        if($factor > 1) {
+            $targetWidth = $width * $factor;
+            $targetHeight = $height;
+        } elseif($factor < 1) {
+            $targetHeight = $height/$factor;
+            $targetWidth = $width;
+        } else {
+            $targetWidth = $width;
+            $targetHeight = $height;
+        }
+        return [$targetWidth, $targetHeight];
+    }
 } 

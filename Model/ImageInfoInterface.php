@@ -22,6 +22,9 @@ interface ImageInfoInterface {
     public function getLongDescription();
     public function getGeolocation();
 
+    public function getCropOutside();
+    public function getBgColor();
+
     /**
      * @param Format $format
      * @return Resize

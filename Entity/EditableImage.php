@@ -60,6 +60,19 @@ abstract class EditableImage implements EditableInterface{
      */
     protected $filters;
 
+
+    /**
+     * @ORM\Column(type="string",nullable=true)
+     * @var string
+     */
+    protected $bgColor;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @var boolean
+     */
+    protected $cropOutside;
+
     /**
      * @return string
      */
@@ -162,9 +175,45 @@ abstract class EditableImage implements EditableInterface{
      */
     public function setFilters($filters)
     {
-        var_dump($filters);
         $this->filters = $filters;
     }
+
+    /**
+     * @return array
+     */
+    public function getBgColor()
+    {
+        return $this->bgColor;
+    }
+
+    /**
+     * @param array $bgColor
+     * @return self
+     */
+    public function setBgColor($bgColor)
+    {
+        $this->bgColor = $bgColor;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isCropOutside()
+    {
+        return $this->cropOutside;
+    }
+
+    /**
+     * @param boolean $cropOutside
+     * @return self
+     */
+    public function setCropOutside($cropOutside)
+    {
+        $this->cropOutside = $cropOutside;
+        return $this;
+    }
+
 
 
 } 

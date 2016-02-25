@@ -26,9 +26,9 @@ class ImageInfoFactory implements ImageInfoFactoryInterface{
      * @param SourceInterface $source
      * @return mixed
      */
-    public function createInstance($title, $alt, $long, $geolocation, $parent, $crops, $paths, SourceInterface $source,$filters)
+    public function createInstance($title, $alt, $long, $geolocation, $parent, $crops, $paths, SourceInterface $source,$filters, $cropOutside=null,$bgColor = null )
     {
-        return new ImageInfo($alt,$crops,$geolocation,$long, $paths,$source,$title,$filters);
+        return new ImageInfo($alt,$crops,$geolocation,$long, $paths,$source,$title,$filters,$bgColor, $cropOutside);
     }
 
     public function getClass()

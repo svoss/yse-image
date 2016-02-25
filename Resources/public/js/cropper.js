@@ -4,12 +4,18 @@ var Cropper = function (container) {
     console.log("Creating new");
     this.formats = container.data('formats');
     this.nFormats = 0;
-    var id_prefix = '#'+container.data('crop-id')
+    var crop_id_prefix = '#'+container.data('crop-id');
+    this.id_prefix = '#'+container.data('id');
+    console.log(this.id_prefix);
     this.cropForms = {};
     this.cropData = {};
     this.imgSrc = container.data('source');
+    this.image = container.data('image');
     this.currentFormat = null;
     this.defaultFormat = null;
+    this.color = $(this.id_prefix+"_bgColor").val();
+    this.check_color_link = $('#bg-color').data('check-link');
+    this.borderize = $(this.id_prefix+"_cropOutside").val() == 1;
     var ref = this;
     $.each(this.formats,
         function(name, v){
@@ -17,7 +23,7 @@ var Cropper = function (container) {
                 ref.defaultFormat = name;
             }
             this.nFormats++;
-            ref.cropForms[name] = $(id_prefix+"_"+name);
+            ref.cropForms[name] = $(crop_id_prefix+"_"+name);
             ref.cropData[name] = JSON.parse(ref.cropForms[name].val());
         }
     );
@@ -29,10 +35,24 @@ var Cropper = function (container) {
 Cropper.jcrop_api = null;
 Cropper.prototype.show = function(){
     this.loadMenu();
-    this.loadImage();
     this.changeToFormat(this.defaultFormat);
+    this.loadBorderizer();
     $('#crop-modal').modal();
 
+
+}
+Cropper.prototype.loadBorderizer = function()
+{
+    var self = this;
+    $('#bg-color').val(this.color);
+    if(this.borderize === false){
+        $('#bg-color').prop('disabled',true);
+    }
+    $('#bg-color').keyup(function(e){self.changeColor(e);});
+    if(this.borderize) {
+        $('#border-image').iCheck('check');
+    }
+    $('#border-image').on('ifToggled',function(e){self.changeBorderize(e);});
 
 }
 
@@ -69,8 +89,23 @@ Cropper.prototype.loadMenu = function()
 
 Cropper.prototype.loadImage = function ()
 {
-    console.log(this.imgSrc);
-    $("#crop-source-image").attr('src',this.imgSrc);
+    var f = this.formats[this.currentFormat];
+    var str = this.imgSrc+"&width="+f.width+"&height="+f.height+"&bg="+encodeURIComponent(this.color);
+    if(this.borderize) {
+        str += "&border=1";
+    }
+    if(Cropper.jcrop_api != null){
+        Cropper.jcrop_api.destroy();
+    }
+    $('#img-holder').html('');
+    var self = this;
+    $('#waiting4image').show();
+    $('#img-holder').html('<img src="" id="crop-source-image">');
+    $("#crop-source-image").on('load',function(){
+        $('#waiting4image').hide();
+        self.reloadJcrop();
+    });
+    $("#crop-source-image").attr('src',str);
 
 }
 Cropper.prototype.reloadJcrop = function()
@@ -87,11 +122,11 @@ Cropper.prototype.reloadJcrop = function()
     var crop = this.cropData[this.currentFormat];
     options.minSize = [format.width, format.height];
     options.aspectRatio = format.width/format.height;
+    options.bgColor = 'red';
     var ref = this;
     options.onSelect = function(c){ ref.changeCrop(c);};
     if(crop.type == 'custom')
     {
-        console.log("Go gogo");
         options.setSelect = [crop.customCrop.startx,crop.customCrop.starty,crop.customCrop.startx + crop.customCrop.width, crop.customCrop.starty + crop.customCrop.height];
     }
      $("#crop-source-image").Jcrop(options, function(){Cropper.jcrop_api = this;});
@@ -104,17 +139,66 @@ Cropper.prototype.changeCrop = function(c)
     this.cropData[this.currentFormat].customCrop = {"startx": c.x, "starty": c.y, "width": c.w, "height": c.h};
 }
 
+Cropper.prototype.changeColor = function(e)
+{
+    var t = $(e.currentTarget);
+    this.color = t.val();
+    this.checkColor();
+
+}
+
+Cropper.prototype.changeBorderize = function(c)
+{
+    var cb = $(c.currentTarget);
+    this.borderize = cb.is(":checked");
+    if(this.borderize) {
+        $('#bg-color').prop('disabled',false);
+        this.checkColor();
+    } else {
+        $('#bg-color').val('');
+        $('#bg-color').prop('disabled',true);
+        this.loadImage();
+        this.color = '';
+    }
+
+}
+Cropper.prototype.checkColor = function ()
+{
+    var self = this;
+    if(this.xhr && this.xhr.readystate != 4){
+        this.xhr.abort();
+    }
+    this.xhr =  $.get(
+        this.check_color_link,
+        {'image':this.image, 'color':this.color} ,
+        function(r){
+            r = JSON.parse(r);
+            if(r.error){
+                $('#color-group').addClass("has-error");
+            } else {
+
+                $('#color-group').removeClass("has-error");
+                if(self.color == '') {
+                    self.color = r.color;
+                    $('#bg-color').val(self.color);
+                }
+                self.loadImage();
+            }
+
+        }
+    );
+}
+
 Cropper.prototype.changeToFormat = function(format) {
     if(this.currentFormat != null) {
         this.formatMenu[this.currentFormat].removeClass("active");
     }
     this.currentFormat = format;
     this.formatMenu[format].addClass("active");
-    this.reloadJcrop();
+    this.loadImage();
  }
 
 Cropper.prototype.save = function() {
-    console.log("Closing");
     var ref = this;
     $.each(this.formats,
         function(name, v){
@@ -122,5 +206,8 @@ Cropper.prototype.save = function() {
 
         }
     );
+
+    this.borderize = $(this.id_prefix+"_cropOutside").val(this.borderize ? '1' : '0');
+    $(this.id_prefix+"_bgColor").val(this.color);
     $('#crop-modal').modal('hide');
 }

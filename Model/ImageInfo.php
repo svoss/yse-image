@@ -54,7 +54,19 @@ class ImageInfo implements ImageInfoInterface{
      */
     protected $filters;
 
-    function __construct($alt, $crops, $geoLocation, $longDescription, $paths, $source, $title, $filters)
+    /**
+     * @ORM\Column(type="string",nullable=true)
+     * @var string
+     */
+    protected $bgColor;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @var boolean
+     */
+    protected $cropOutside;
+
+    function __construct($alt, $crops, $geoLocation, $longDescription, $paths, $source, $title, $filters, $bgColor, $cropOutside)
     {
         $this->alt = $alt;
         $this->crops = $crops;
@@ -64,7 +76,46 @@ class ImageInfo implements ImageInfoInterface{
         $this->source = $source;
         $this->title = $title;
         $this->filters = $filters;
+        $this->bgColor = $bgColor;
+        $this->cropOutside = $cropOutside;
     }
+
+    /**
+     * @return string
+     */
+    public function getBgColor()
+    {
+        return $this->bgColor;
+    }
+
+    /**
+     * @param string $bgColor
+     * @return self
+     */
+    public function setBgColor($bgColor)
+    {
+        $this->bgColor = $bgColor;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getCropOutside()
+    {
+        return $this->cropOutside;
+    }
+
+    /**
+     * @param boolean $cropOutside
+     * @return self
+     */
+    public function setCropOutside($cropOutside)
+    {
+        $this->cropOutside = $cropOutside;
+        return $this;
+    }
+
 
     /**
      * @return string

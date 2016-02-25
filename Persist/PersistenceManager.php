@@ -62,6 +62,8 @@ class PersistenceManager {
             $filters = $ui->getFilters();
             $crops = $ui->getCrops();
             $paths = $ui->getPaths();
+            $cropOutside = $ui->isCropOutside();
+            $bgColor = $ui->getBgColor();
         } else {
             $relation = $this->relationProviderManager->getRelationProvider($relationInfo->getParentObject());
             $attrs = $relation->getAttributes($ui,$relationInfo);
@@ -72,10 +74,13 @@ class PersistenceManager {
             $filters = $relation->loadDefaultFilters($ui,$relationInfo);
             $crops = $relation->loadDefaultCrops($ui,$relationInfo);
             $paths = $relation->loadDefaultPaths($ui,$relationInfo);
+
+            $cropOutside = false;
+            $bgColor = null;
         }
         $parent = get_class($relationInfo->getParentObject());
         $source = $ui->getSource();
-        return $this->factoryManager->getFactory($imageInfoclass)->createInstance($title, $alt, $long, $geo, $parent, $crops, $paths, $source,$filters);
+        return $this->factoryManager->getFactory($imageInfoclass)->createInstance($title, $alt, $long, $geo, $parent, $crops, $paths, $source,$filters,$cropOutside, $bgColor);
     }
 
     public function loadDefaultToPersistent(UneditableInterface $ui,  $relationInfo )
