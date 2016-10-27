@@ -68,7 +68,7 @@ abstract class EditableImage implements EditableInterface{
     protected $bgColor;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      * @var boolean
      */
     protected $cropOutside;
