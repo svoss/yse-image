@@ -231,4 +231,26 @@ class Image implements \ISTI\Image\Persist\EditableInterface{
     {
        $this->filters = base64_encode(serialize($filters));
     }
+
+    public function getBgColor()
+    {
+        // TODO: Implement getBgColor() method.
+    }
+
+    public function setBgColor($bgColor)
+    {
+        // TODO: Implement setBgColor() method.
+    }
+
+    public function isCropOutside()
+    {
+        // TODO: Implement isCropOutside() method.
+    }
+
+    public function setCropOutside($cropOutside)
+    {
+        // TODO: Implement setCropOutside() method.
+    }
+
+
 }
