@@ -45,9 +45,9 @@ class Resize {
     /**
      * @param CustomCrop|null $custumCrop
      */
-    public function setCustumCrop($custumCrop)
+    public function setCostumCrop($costumCrop)
     {
-        $this->custumCrop = $custumCrop;
+        $this->costumCrop = $costumCrop;
     }
 
     /**
