@@ -145,6 +145,8 @@ class ImageManager {
 
         $path = $this->path($formatName, $parent, $attribute, $index,true);
 
+        return $path;
+
     }
 
     public function newImage($parent, $attribute, UneditableInterface $image, File $file, $index = null)
