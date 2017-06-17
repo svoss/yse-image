@@ -34,6 +34,7 @@ class ImageExtension extends \Twig_Extension {
     public function getFunctions(){
         return array(
             'resize' => new \Twig_Function_Function(array($this,'resizeImage')),
+
             'image_thumb' => new \Twig_Function_Function(array($this,'thumb')),
             'image_formats' => new \Twig_Function_Function(array($this,'imageFormats')),
             'source_link' => new \Twig_Function_Function(array($this,'sourceLink')),
@@ -53,7 +54,7 @@ class ImageExtension extends \Twig_Extension {
      */
     public function resizeImage($format, $parent, $attribute, $index = null)
     {
-        return $this->im->format($format, $parent, $attribute, $index);
+        return $this->im->path($format, $parent, $attribute, $index);
     }
 
     /**

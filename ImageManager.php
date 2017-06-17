@@ -61,18 +61,9 @@ class ImageManager {
      */
     protected $saverManager;
 
-    /**
-     * Will get the formatted version of a certain image.
-     * @param string $formatName        the format to convert to
-     * @param Object $parent
-     * @param string $attribute     the attribute
-     * @param null $index
-     *
-     * @return string src to file
-     */
-    public function format($formatName, $parent, $attribute, $index = null)
-    {
 
+    public function path($formatName, $parent, $attribute, $index = null, $fullLink=false)
+    {
         $persistence = call_user_func(array($parent,'get'.ucfirst($attribute)));
 
         if(is_array($persistence) || in_array('Traversable', class_implements($persistence))){
@@ -134,9 +125,25 @@ class ImageManager {
             }
 
         }
+        if($fullLink) {
+            return $saver->linkTo($path);
+        }
+        return $path;
+    }
 
+    /**
+     * Will get the formatted version of a certain image.
+     * @param string $formatName        the format to convert to
+     * @param Object $parent
+     * @param string $attribute     the attribute
+     * @param null $index
+     *
+     * @return string src to file
+     */
+    public function format($formatName, $parent, $attribute, $index = null)
+    {
 
-        return $saver->linkTo($path);
+        $path = $this->path($formatName, $parent, $attribute, $index,true);
 
     }
 
