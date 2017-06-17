@@ -54,7 +54,7 @@ class ImageExtension extends \Twig_Extension {
      */
     public function resizeImage($format, $parent, $attribute, $index = null)
     {
-        return $this->im->path($format, $parent, $attribute, $index);
+        return $this->im->format($format, $parent, $attribute, $index);
     }
 
     /**
