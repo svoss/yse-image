@@ -131,6 +131,37 @@ class ImageManager {
         return $path;
     }
 
+    public function preload(Preload $preload)
+    {
+        $items = [];
+        $repo = null;
+
+        foreach($preload->getPreloads() as $x)
+        {
+
+            list($parent,$attribute,$formatName) = $x;
+
+            $relation = new RelationInfo($attribute, null, $parent, RelationInfo::OneToOne);
+            $persistence = call_user_func(array($parent,'get'.ucfirst($attribute)));
+            if ($persistence !== null) {
+                
+                $image = $this->persistenceManager->loadFromPersistent($persistence, $this->imageInfoClass, $relation);
+
+                //format for this image
+                $format = $this->relationProviderManager->getFormatFor($relation, $parent, $formatName);
+                $items[] = ['image'=>$image, 'format'=>$format];
+                if($repo === null) {
+                    //load the repo of the image info persistence object:
+                    $repo = $this->persistenceManager->getRepository($image);
+
+                }
+            }
+
+        }
+
+        $repo->loadInCache($items);
+    }
+
     /**
      * Will get the formatted version of a certain image.
      * @param string $formatName        the format to convert to

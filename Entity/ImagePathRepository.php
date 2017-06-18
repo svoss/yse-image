@@ -98,5 +98,28 @@ class ImagePathRepository implements ImageinfoRepositoryInterface{
         return 'ISTI\Image\Model\ImageInfo';
     }
 
+    public function loadInCache($items)
+    {
+        $hashes = [];
+
+        foreach ($items as $x) {
+            $info = $x['image'];
+            $format = $x['format'];
+
+            $hash = $this->hasher->hash($info, $format);
+
+            if(!isset($this->cache[$hash])){
+                $hashes[] = $hash;
+            }
+
+        }
+
+        $query = $this->em->createQuery("SELECT p FROM ISTI\Image\Entity\ImagePath p WHERE p.hash IN (:hash) ");
+        $query->setParameter('hash',$hashes);
+        foreach($query->getResult() as $r) {
+            $this->cache[$r->getHash()] = $r;
+        }
+    }
+
 
 }
