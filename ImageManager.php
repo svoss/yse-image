@@ -158,8 +158,10 @@ class ImageManager {
             }
 
         }
+        if ($repo !== null) {
 
-        $repo->loadInCache($items);
+            $repo->loadInCache($items);
+        }
     }
 
     /**
