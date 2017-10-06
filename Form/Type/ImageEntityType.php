@@ -49,8 +49,9 @@ class ImageEntityType extends AbstractType {
             ->add($builder->create('source', 'file',array("required" => false))
                 ->addModelTransformer(new FileToSourceTransformer($this->saver )))
             ->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) use ($ic){
-                $file = $event->getData()['source'];
-                if($file != null && $file->guessExtension() != 'svg')
+
+                $file = isset($event->getData()['source']) ? $event->getData()['source'] : null;
+                if($file !== null && $file->guessExtension() != 'svg')
                 {
                     $errorList = $this->validator->validate(
                         $file,
