@@ -31,6 +31,8 @@ var Cropper = function (container) {
     this.formatMenu = {};
 
     $('#crop-save').click(function(){ref.save()});
+
+    $('#trans-color').change(function(){ref.reloadJcrop()});
 };
 Cropper.jcrop_api = null;
 Cropper.prototype.show = function(){
@@ -122,7 +124,7 @@ Cropper.prototype.reloadJcrop = function()
     var crop = this.cropData[this.currentFormat];
     options.minSize = [format.width, format.height];
     options.aspectRatio = format.width/format.height;
-    options.bgColor = 'red';
+    options.bgColor = $('#trans-color').val();
     var ref = this;
     options.onSelect = function(c){ ref.changeCrop(c);};
     if(crop.type == 'custom')

@@ -36,12 +36,12 @@ class ImageController extends Controller
         }
         if($borderize){
             $geo = $img->getImageGeometry();
+            $txt = var_export($geo, true);
             $dims = $this->borderDimensions($geo['width'], $geo['height'], $width/$height);
-            $img->borderImage($bg,$dims[0],$dims[1]);
+            $img->borderImage($bg,$dims[0], $dims[1]);
         }
 
-
-        $r= new Response($img,200);
+        $r= new Response($img->getImageBlob(),200);
         $r->headers->set('Content-Type',$img->getImageMimeType());
         return $r;
     }
@@ -100,10 +100,10 @@ class ImageController extends Controller
         //real width relativly lower than actual width
         if($factor > 1) {
             $targetWidth = $width * $factor;
-            return [ceil(($targetWidth - $width)/2),0];
+            return [(int) ceil(($targetWidth - $width)/2),1];
         } elseif($factor < 1) {
             $targetHeight = $height/$factor;
-            return [0,ceil(($targetHeight - $height)/2)];
+            return [1,(int) ceil(($targetHeight - $height)/2)];
         }
         return [0,0];
     }
