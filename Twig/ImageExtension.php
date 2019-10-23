@@ -54,6 +54,7 @@ class ImageExtension extends \Twig_Extension {
      */
     public function resizeImage($format, $parent, $attribute, $index = null)
     {
+        return 'http://placekitten.com/g/200/300';
         return $this->im->format($format, $parent, $attribute, $index);
     }
 
@@ -87,6 +88,7 @@ class ImageExtension extends \Twig_Extension {
     }
     public function sourceLink($source)
     {
+        return '';
         return $this->im->getLinkToSource($source);
     }
 

@@ -21,7 +21,7 @@ use ISTI\Image\SEOImageException;
 use Symfony\Component\HttpFoundation\File\File;
 class ImageManager {
 
-    public function __construct($persistenceManager, $imageInfoClass, $resizer, $saveManager, Uniquifier $uniquifier, RelationProviderManager $relationProviderManager)
+    public function __construct($persistenceManager, $imageInfoClass, $resizer, $saveManager, Uniquifier $uniquifier, RelationProviderManager $relationProviderManager, $replaceByHolder = false)
     {
 
         $this->persistenceManager = $persistenceManager;
@@ -30,6 +30,7 @@ class ImageManager {
         $this->uniquifier = $uniquifier;
         $this->saverManager = $saveManager;
         $this->relationProviderManager = $relationProviderManager;
+        $this->replaceByHolder = $replaceByHolder;
     }
     /**
      * @var Uniquifier
@@ -61,6 +62,8 @@ class ImageManager {
      */
     protected $saverManager;
 
+    /** @var bool */
+    protected $replaceByHolder;
 
     public function path($formatName, $parent, $attribute, $index = null, $fullLink=false)
     {
@@ -111,7 +114,10 @@ class ImageManager {
 
             //where is the source image
             $pathToSourceImage = $saver->getFilePathToSource($image->getSource());
-
+            /** @var Format $format */
+            if ($this->replaceByHolder && !\file_exists($pathToSourceImage)) {
+                return $this->replaceByHolder($format);
+            }
             if($saver->cropable($image->getSource()))
             {
                 //create temporary file to save the file to it
@@ -129,6 +135,18 @@ class ImageManager {
             return $saver->linkTo($path);
         }
         return $path;
+    }
+
+    private function replaceByHolder(Format $format)
+    {
+        $n = rand(0,3);
+        if ($n < 1) {
+            return 'http://placekitten.com/g/'.$format->getWidth().'/'.$format->getHeight().'?image='.rand(0,5);
+        }
+        if ($n < 2) {
+            return 'http://placebear.com/'.$format->getWidth().'/'.$format->getHeight().'?image='.rand(0,5);
+        }
+        return 'https://loremflickr.com/'.$format->getWidth().'/'.$format->getHeight().'?lock='.rand(0,10);
     }
 
     public function preload(Preload $preload)

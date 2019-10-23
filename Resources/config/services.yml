@@ -15,7 +15,7 @@ services:
         arguments: [@isti.image.persist.persistence_manager]
     isti.image.manager:
         class: ISTI\Image\ImageManager
-        arguments: [@isti.image.persist.persistence_manager, %isti.image.imageinfoclass% ,@isti.image.resizer.gregwar,@isti.image.saver.manager,@isti.image.uniquifier,@isti.image.relation.provider_manager ]
+        arguments: [@isti.image.persist.persistence_manager, %isti.image.imageinfoclass% ,@isti.image.resizer.gregwar,@isti.image.saver.manager,@isti.image.uniquifier,@isti.image.relation.provider_manager, %replace_by_holder%]
     easybook.slugger:
         class: Easybook\Slugger
     isti.image.twig.image_extension:
