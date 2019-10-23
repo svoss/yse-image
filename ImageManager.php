@@ -115,7 +115,7 @@ class ImageManager {
             //where is the source image
             $pathToSourceImage = $saver->getFilePathToSource($image->getSource());
             /** @var Format $format */
-            if ($this->replaceByHolder && !\file_exists($pathToSourceImage)) {
+            if ($this->replaceByHolder) {
                 return $this->replaceByHolder($format);
             }
             if($saver->cropable($image->getSource()))
